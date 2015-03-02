@@ -13,20 +13,26 @@ package modes
 
 // Converted from a python file
 
-// ChannelFlag is an integer channel access level flag
-type ChannelFlag int
+// PropFlag is a normal channel mode flag.
+type PropFlag int
 
-// SetFlag is an integer channel setting flag
+// SetFlag is an integer channel setting flag for parametric modes.
 type SetFlag int
 
-// ModeFlag is an interger channel mode flag
-type ModeFlag int
+// PrefixFlag is an integer channel mode flag that cause a user prefix.
+type PrefixFlag int
 
 // UserFlag is a user mode flag
 type UserFlag int
 
-// Listmode is a channel list-like mode
-type Listmode int
+// ListMode is a channel list-like mode
+type ListMode int
+
+//go:generate stringer -type=PropFlag
+//go:generate stringer -type=SetFlag
+//go:generate stringer -type=PrefixFlag
+//go:generate stringer -type=UserFlag
+//go:generate stringer -type=ListMode
 
 // Kinds of modes
 const (
@@ -39,122 +45,98 @@ const (
 
 // Channel access levels
 const (
-	ChflPeon   = iota // No channel status
-	ChflVoice         // Voiced
-	ChflHalfop        // Channel halfop
-	ChflChanop        // Channel operator
-	ChflAdmin         // Channel admin
-	ChflOwner         // Channel owner
+	ChflPeon   PrefixFlag = iota // No channel status
+	ChflVoice                    // Voiced
+	ChflHalfop                   // Channel halfop
+	ChflChanop                   // Channel operator
+	ChflAdmin                    // Channel admin
+	ChflOwner                    // Channel owner
 )
 
-// Channel set flags
+// Channel set flags for parametric modes
 const (
-	SetNone         = iota // No settings
-	SetKey                 // Old +k, channel is keyed
-	SetForward             // Old +f, channel has a forward channel
-	SetLimit               // Old +l, channel has a limit
-	SetJoinThrottle        // Old +j, channel has a join throttle
+	SetNone         SetFlag = iota // No settings
+	SetKey                         // Old +k, channel is keyed
+	SetForward                     // Old +f, channel has a forward channel
+	SetLimit                       // Old +l, channel has a limit
+	SetJoinThrottle                // Old +j, channel has a join throttle
 )
 
 // Channel propreties
 const (
-	PropNone       = iota // No properties
-	PropMute              // Old +m, mute
-	PropPrivate           // Old +p, private channel
-	PropInvite            // Old +i, invite only
-	PropTopicrest         // Old +t, only ops can set topic
-	PropInternal          // Old +n, only users in channel can send to it
-	PropSecret            // Old +s, only users in channel know it exists
-	PropNoCTCP            // Old +C, no CTCP messages
-	PropNoAction          // Old +D, no CTCP Action messages
-	PropNoKicks           // Old +E, operators cannot kick
-	PropNoCaps            // OLD +G, ALL CAPITAL LETTER MESSAGES ARE BLOCKED
-	PropNoRejoin          // Old +J, no immediate Rejoin after KICK
-	PropLargelist         // Old +L, larger channel lists
-	PropNoOperKick        // Old +M, staff cannot be kicked
-	PropOperonly          // Old +O, only opers may join
-	PropPermanent         // Old +P, channel persists without users
-	PropDisforward        // Old +Q, channel may not be forwarded to
-	PropNoNotice          // Old +T, channel may not be Notice'd to
-	PropNoColor           // Old +c, channel Color codes are stripped
-	PropNoNicks           // Old +d, nick changes are forbidden when in channel
-	PropFreeinvite        // Old +g, invite is freely usable
-	PropHidebans          // Old +u, ban list is hidden without the proper STATUS
-	PropOpmod             // Old +z, channel messages blocked by something are sent to ops
-	PropFreefwd           // Old +F, free forwarding
-	PropNoRepeat          // Old +K, no repeating messages
+	PropNone       PropFlag = iota // No properties
+	PropMute                       // Old +m, mute
+	PropPrivate                    // Old +p, private channel
+	PropInvite                     // Old +i, invite only
+	PropTopicrest                  // Old +t, only ops can set topic
+	PropInternal                   // Old +n, only users in channel can send to it
+	PropSecret                     // Old +s, only users in channel know it exists
+	PropNoCTCP                     // Old +C, no CTCP messages
+	PropNoAction                   // Old +D, no CTCP Action messages
+	PropNoKicks                    // Old +E, operators cannot kick
+	PropNoCaps                     // OLD +G, ALL CAPITAL LETTER MESSAGES ARE BLOCKED
+	PropNoRejoin                   // Old +J, no immediate Rejoin after KICK
+	PropLargelist                  // Old +L, larger channel lists
+	PropNoOperKick                 // Old +M, staff cannot be kicked
+	PropOperonly                   // Old +O, only opers may join
+	PropPermanent                  // Old +P, channel persists without users
+	PropDisforward                 // Old +Q, channel may not be forwarded to
+	PropNoNotice                   // Old +T, channel may not be Notice'd to
+	PropNoColor                    // Old +c, channel Color codes are stripped
+	PropNoNicks                    // Old +d, nick changes are forbidden when in channel
+	PropFreeinvite                 // Old +g, invite is freely usable
+	PropHidebans                   // Old +u, ban list is hidden without the proper STATUS
+	PropOpmod                      // Old +z, channel messages blocked by something are sent to ops
+	PropFreefwd                    // Old +F, free forwarding
+	PropNoRepeat                   // Old +K, no repeating messages
 )
 
 // User properties
 const (
-	UPropNone           = iota // No user properties
-	UPropInvisible             // Old +i, invisible client
-	UPropCallerid              // Old +g, "caller id"
-	UPropIrcop                 // Old +o, user is an IRC operator
-	UPropCloaked               // Old +x, user has a cloaked IP address
-	UPropAdmin                 // Old +a, user is an IRC administrator
-	UPropOverride              // Old +p, implicit chanop access
-	UPropNoCTCP                // Old +C, prevents receiving CTCP messages other than Action (/me)
-	UPropDeaf                  // Old +D, ignoes all channel messages
-	UPropDisforward            // Old +Q, prevents channel forwarding
-	UPropRegpm                 // Old +R, requires people to be registered with services to pm
-	UPropSoftcall              // Old +G, Soft caller ID, caller id exempting common channels
-	UPropNoinvite              // Old +V, prevents user from getting invites
-	UPropNostalk               // Old +I, doesn't show channel list in whois
-	UPropSSLClient             // Old +Z, client is connected over SSL
-	UPropNetworkService        // Old +S, client is a network service with all of the associated powers
+	UPropNone           UserFlag = iota // No user properties
+	UPropInvisible                      // Old +i, invisible client
+	UPropCallerid                       // Old +g, "caller id"
+	UPropIrcop                          // Old +o, user is an IRC operator
+	UPropCloaked                        // Old +x, user has a cloaked IP address
+	UPropAdmin                          // Old +a, user is an IRC administrator
+	UPropOverride                       // Old +p, implicit chanop access
+	UPropNoCTCP                         // Old +C, prevents receiving CTCP messages other than Action (/me)
+	UPropDeaf                           // Old +D, ignoes all channel messages
+	UPropDisforward                     // Old +Q, prevents channel forwarding
+	UPropRegpm                          // Old +R, requires people to be registered with services to pm
+	UPropSoftcall                       // Old +G, Soft caller ID, caller id exempting common channels
+	UPropNoinvite                       // Old +V, prevents user from getting invites
+	UPropNostalk                        // Old +I, doesn't show channel list in whois
+	UPropSSLClient                      // Old +Z, client is connected over SSL
+	UPropNetworkService                 // Old +S, client is a network service with all of the associated powers
 )
 
 //Channel lists
 const (
-	ListNone   = iota
-	ListBan    // Old +b, channel bans
-	ListQuiet  // Old +q, channel quiets
-	ListExcept // Old +e, channel ban exceptions
-	ListInvex  // Old +I, channel invite execptions
+	ListNone   ListMode = iota
+	ListBan             // Old +b, channel bans
+	ListQuiet           // Old +q, channel quiets
+	ListExcept          // Old +e, channel ban exceptions
+	ListInvex           // Old +I, channel invite execptions
 )
 
-// String returns the ChannelFlag as a channel mode letter
-func (c ChannelFlag) String() string {
-	return Revchanmodes[4][int(c)]
-}
-
-// String returns a ListMode as a channel mode letter
-func (l Listmode) String() string {
-	return Revchanmodes[0][int(l)]
-}
-
-// String returns a ModeFlag as a channel mode letter
-func (m ModeFlag) String() string {
-	return Revchanmodes[3][int(m)]
-}
-
-// String returns a SetFlag as a channel mode letter
-func (s SetFlag) String() string {
-	if s == SetKey {
-		return "k"
-	}
-
-	return Revchanmodes[2][int(s)]
-}
-
 // This is a handy lookup table from channel mode letters to bitmasks.
-var Chanmodes = []map[string]int{
-	map[string]int{
+var Chanmodes = []map[string]interface{}{
+	map[string]interface{}{
 		"q": ListQuiet,
 		"b": ListBan,
 		"e": ListExcept,
 		"I": ListInvex,
 	},
-	map[string]int{
+	map[string]interface{}{
 		"k": SetKey,
 	},
-	map[string]int{
+	map[string]interface{}{
 		"j": SetJoinThrottle,
 		"f": SetJoinThrottle,
 		"l": SetLimit,
 	},
-	map[string]int{
+	map[string]interface{}{
 		"C": PropNoCTCP,
 		"D": PropNoAction,
 		"E": PropNoKicks,
@@ -180,7 +162,7 @@ var Chanmodes = []map[string]int{
 		"u": PropHidebans,
 		"z": PropOpmod,
 	},
-	map[string]int{
+	map[string]interface{}{
 		"h": ChflHalfop,
 		"o": ChflChanop,
 		"v": ChflVoice,
@@ -190,22 +172,22 @@ var Chanmodes = []map[string]int{
 }
 
 // This is a handy lookup table from bitmask flags to mode letters.
-var Revchanmodes = []map[int]string{
-	map[int]string{
+var Revchanmodes = []map[interface{}]string{
+	map[interface{}]string{
 		ListQuiet:  "q",
 		ListBan:    "b",
 		ListExcept: "e",
 		ListInvex:  "I",
 	},
-	map[int]string{
+	map[interface{}]string{
 		SetKey: "k",
 	},
-	map[int]string{
+	map[interface{}]string{
 		SetJoinThrottle: "j",
 		SetForward:      "f",
 		SetLimit:        "l",
 	},
-	map[int]string{
+	map[interface{}]string{
 		PropNoCTCP:     "C",
 		PropNoAction:   "D",
 		PropNoKicks:    "E",
@@ -231,7 +213,7 @@ var Revchanmodes = []map[int]string{
 		PropHidebans:   "u",
 		PropOpmod:      "z",
 	},
-	map[int]string{
+	map[interface{}]string{
 		ChflHalfop: "h",
 		ChflChanop: "o",
 		ChflVoice:  "v",
@@ -241,7 +223,7 @@ var Revchanmodes = []map[int]string{
 }
 
 // This is a handy lookup table from user mode flags to bitmasks.
-var Umodes = map[string]int{
+var Umodes = map[string]interface{}{
 	"i": UPropInvisible,
 	"g": UPropCallerid,
 	"o": UPropIrcop,
@@ -259,7 +241,7 @@ var Umodes = map[string]int{
 }
 
 // This is a handy lookup table for channel prefixes to bitmask flags.
-var Prefixes = map[string]int{
+var Prefixes = map[string]interface{}{
 	"+": ChflVoice,
 	"%": ChflHalfop,
 	"@": ChflChanop,
@@ -268,7 +250,7 @@ var Prefixes = map[string]int{
 }
 
 // This is a handy lookup table for status mode flags to human readable strings.
-var Statuses = map[ChannelFlag]string{
+var Statuses = map[PrefixFlag]string{
 	ChflVoice:  "voiced",
 	ChflHalfop: "half-operator",
 	ChflChanop: "channel operator",
