@@ -45,70 +45,70 @@ const (
 
 // Channel access levels
 const (
-	ChflPeon   PrefixFlag = iota // No channel status
-	ChflVoice                    // Voiced
-	ChflHalfop                   // Channel halfop
-	ChflChanop                   // Channel operator
-	ChflAdmin                    // Channel admin
-	ChflOwner                    // Channel owner
+	ChflPeon   PrefixFlag = 1 << iota // No channel status
+	ChflVoice                         // Voiced
+	ChflHalfop                        // Channel halfop
+	ChflChanop                        // Channel operator
+	ChflAdmin                         // Channel admin
+	ChflOwner                         // Channel owner
 )
 
 // Channel set flags for parametric modes
 const (
-	SetNone         SetFlag = iota // No settings
-	SetKey                         // Old +k, channel is keyed
-	SetForward                     // Old +f, channel has a forward channel
-	SetLimit                       // Old +l, channel has a limit
-	SetJoinThrottle                // Old +j, channel has a join throttle
+	SetNone         SetFlag = 1 << iota // No settings
+	SetKey                              // Old +k, channel is keyed
+	SetForward                          // Old +f, channel has a forward channel
+	SetLimit                            // Old +l, channel has a limit
+	SetJoinThrottle                     // Old +j, channel has a join throttle
 )
 
 // Channel propreties
 const (
-	PropNone       PropFlag = iota // No properties
-	PropMute                       // Old +m, mute
-	PropPrivate                    // Old +p, private channel
-	PropInvite                     // Old +i, invite only
-	PropTopicrest                  // Old +t, only ops can set topic
-	PropInternal                   // Old +n, only users in channel can send to it
-	PropSecret                     // Old +s, only users in channel know it exists
-	PropNoCTCP                     // Old +C, no CTCP messages
-	PropNoAction                   // Old +D, no CTCP Action messages
-	PropNoKicks                    // Old +E, operators cannot kick
-	PropNoCaps                     // OLD +G, ALL CAPITAL LETTER MESSAGES ARE BLOCKED
-	PropNoRejoin                   // Old +J, no immediate Rejoin after KICK
-	PropLargelist                  // Old +L, larger channel lists
-	PropNoOperKick                 // Old +M, staff cannot be kicked
-	PropOperonly                   // Old +O, only opers may join
-	PropPermanent                  // Old +P, channel persists without users
-	PropDisforward                 // Old +Q, channel may not be forwarded to
-	PropNoNotice                   // Old +T, channel may not be Notice'd to
-	PropNoColor                    // Old +c, channel Color codes are stripped
-	PropNoNicks                    // Old +d, nick changes are forbidden when in channel
-	PropFreeinvite                 // Old +g, invite is freely usable
-	PropHidebans                   // Old +u, ban list is hidden without the proper STATUS
-	PropOpmod                      // Old +z, channel messages blocked by something are sent to ops
-	PropFreefwd                    // Old +F, free forwarding
-	PropNoRepeat                   // Old +K, no repeating messages
+	PropNone       PropFlag = 1 << iota // No properties
+	PropMute                            // Old +m, mute
+	PropPrivate                         // Old +p, private channel
+	PropInvite                          // Old +i, invite only
+	PropTopicrest                       // Old +t, only ops can set topic
+	PropInternal                        // Old +n, only users in channel can send to it
+	PropSecret                          // Old +s, only users in channel know it exists
+	PropNoCTCP                          // Old +C, no CTCP messages
+	PropNoAction                        // Old +D, no CTCP Action messages
+	PropNoKicks                         // Old +E, operators cannot kick
+	PropNoCaps                          // OLD +G, ALL CAPITAL LETTER MESSAGES ARE BLOCKED
+	PropNoRejoin                        // Old +J, no immediate Rejoin after KICK
+	PropLargelist                       // Old +L, larger channel lists
+	PropNoOperKick                      // Old +M, staff cannot be kicked
+	PropOperonly                        // Old +O, only opers may join
+	PropPermanent                       // Old +P, channel persists without users
+	PropDisforward                      // Old +Q, channel may not be forwarded to
+	PropNoNotice                        // Old +T, channel may not be Notice'd to
+	PropNoColor                         // Old +c, channel Color codes are stripped
+	PropNoNicks                         // Old +d, nick changes are forbidden when in channel
+	PropFreeinvite                      // Old +g, invite is freely usable
+	PropHidebans                        // Old +u, ban list is hidden without the proper STATUS
+	PropOpmod                           // Old +z, channel messages blocked by something are sent to ops
+	PropFreefwd                         // Old +F, free forwarding
+	PropNoRepeat                        // Old +K, no repeating messages
 )
 
 // User properties
 const (
-	UPropNone           UserFlag = iota // No user properties
-	UPropInvisible                      // Old +i, invisible client
-	UPropCallerid                       // Old +g, "caller id"
-	UPropIrcop                          // Old +o, user is an IRC operator
-	UPropCloaked                        // Old +x, user has a cloaked IP address
-	UPropAdmin                          // Old +a, user is an IRC administrator
-	UPropOverride                       // Old +p, implicit chanop access
-	UPropNoCTCP                         // Old +C, prevents receiving CTCP messages other than Action (/me)
-	UPropDeaf                           // Old +D, ignoes all channel messages
-	UPropDisforward                     // Old +Q, prevents channel forwarding
-	UPropRegpm                          // Old +R, requires people to be registered with services to pm
-	UPropSoftcall                       // Old +G, Soft caller ID, caller id exempting common channels
-	UPropNoinvite                       // Old +V, prevents user from getting invites
-	UPropNostalk                        // Old +I, doesn't show channel list in whois
-	UPropSSLClient                      // Old +Z, client is connected over SSL
-	UPropNetworkService                 // Old +S, client is a network service with all of the associated powers
+	UPropNone           UserFlag = 1 << iota // No user properties
+	UPropInvisible                           // Old +i, invisible client
+	UPropCallerid                            // Old +g, "caller id"
+	UPropIrcop                               // Old +o, user is an IRC operator
+	UPropCloaked                             // Old +x, user has a cloaked IP address
+	UPropAdmin                               // Old +a, user is an IRC administrator
+	UPropOverride                            // Old +p, implicit chanop access
+	UPropNoCTCP                              // Old +C, prevents receiving CTCP messages other than Action (/me)
+	UPropDeaf                                // Old +D, ignoes all channel messages
+	UPropDisforward                          // Old +Q, prevents channel forwarding
+	UPropRegpm                               // Old +R, requires people to be registered with services to pm
+	UPropSoftcall                            // Old +G, Soft caller ID, caller id exempting common channels
+	UPropNoinvite                            // Old +V, prevents user from getting invites
+	UPropNostalk                             // Old +I, doesn't show channel list in whois
+	UPropSSLClient                           // Old +Z, client is connected over SSL
+	UPropNetworkService                      // Old +S, client is a network service with all of the associated powers
 )
 
 //Channel lists
